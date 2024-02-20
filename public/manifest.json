@@ -1,0 +1,26 @@
+{
+  "name": "ChatGpt4Gmail",
+  "description": "AI Productivity tool for Gmail",
+  "version": "0.1",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": ["main.js"],
+      "css": ["main.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/"
+  ],
+  "manifest_version": 3
+}
