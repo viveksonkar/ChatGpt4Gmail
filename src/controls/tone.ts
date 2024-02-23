@@ -6,19 +6,14 @@ export const tones = [
   "nice"
 ];
 
-export const cmpTone = () => {
-  let cgTone = document.createElement('ul');
+export const cmpTone = (): HTMLDivElement => {
+  let cgTone = document.createElement('div');
   cgTone.classList.add('cg-tone');
-  tones.forEach( tone => {
-    let liEl = document.createElement('li');
-    let checkboxEl = document.createElement('input');
-    checkboxEl.type = "checkbox";
-    checkboxEl.value = tone;
-    checkboxEl.classList.add('cg-tone-checkbox')
-    checkboxEl.classList.add('checkbox')
-    liEl.appendChild(checkboxEl);
-    liEl.innerText = tone.toUpperCase();
-    cgTone.appendChild(liEl);
-  });
+  const checkBoxes = tones.map( tone => `<li>
+    <input type="checkbox" class="cg-tone-checkbox" value="${tone}"/>
+      ${tone.toUpperCase()}
+    </li>`).join("");
+  const cgToneEl = `<ul class="cg-tone">${checkBoxes}</ul>`;
+  cgTone.innerHTML = cgToneEl;
   return cgTone;
 }

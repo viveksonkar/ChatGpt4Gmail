@@ -1,4 +1,5 @@
 import { CONTEXT, SideBarConfig, sideBar } from "../controls/sidebar";
+import Menu from "../menu/menu";
 import { GLOBAL } from '../utils/global-data';
 
 export const SideBarWidget = (context: CONTEXT,
@@ -14,20 +15,35 @@ export const SideBarWidget = (context: CONTEXT,
     console.log("This is working SUBMIT HANDLER ")
   };
 
+  const onSettingHandler = (isOpen: boolean) => {
+    addSidebarContentPanel({
+      ...sidebarConfig, 
+      menu: isOpen ? Menu.MENU_TYPE.SETTINGS : Menu.MENU_TYPE.WRITE_EMAIL,
+      isDefaultOpen: true
+    })
+  }
+
+  const addSidebarContentPanel = (sidebarConfig: SideBarConfig) => {
+    GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar(sidebarConfig)).then( contentPanel => {
+      if(GLOBAL.contentPanelRef) {
+        GLOBAL.contentPanelRef.close(); //closing previous panel
+      }
+      GLOBAL.contentPanelRef = contentPanel; // adding new panel
+      if(sidebarConfig.isDefaultOpen && GLOBAL.contentPanelRef) {
+        GLOBAL.contentPanelRef.open();
+      }
+    });
+  }
+
   let sidebarConfig: SideBarConfig = {
     context: context,
     menu: menu,
+    isDefaultOpen: isDefaultOpen,
     onClose: onCloseHandler,
-    onSubmit: onSubmitHandler
+    onSubmit: onSubmitHandler,
+    onSetting: onSettingHandler
   }
 
-  GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar(sidebarConfig)).then( contentPanel => {
-    if(GLOBAL.contentPanelRef) {
-      GLOBAL.contentPanelRef.close(); //closing previous panel
-    }
-    GLOBAL.contentPanelRef = contentPanel; // adding new panel
-    if(isDefaultOpen && GLOBAL.contentPanelRef) {
-      GLOBAL.contentPanelRef.open();
-    }
-  });
+  addSidebarContentPanel(sidebarConfig);
+  
 }

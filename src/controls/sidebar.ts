@@ -1,9 +1,13 @@
+import { Activation } from "../components/activation";
+import { ReplyEmail } from "../components/reply-email";
 import { RewriteEmail } from "../components/rewrite-email";
+import { Settings } from "../components/settings";
 import { SuggestEmail } from "../components/suggest-email";
 import { SummarizeEmail } from "../components/summarize-email";
 import { TranslateEmail } from "../components/translate-email";
 import { WriteEmail } from "../components/write-email";
 import Menu from "../menu/menu";
+import { GLOBAL } from "../utils/global-data";
 
 export enum CONTEXT {
   'COMPOSE','THREAD'
@@ -12,8 +16,10 @@ export enum CONTEXT {
 export interface SideBarConfig {
   context: CONTEXT;
   menu: string;
+  isDefaultOpen: boolean;
   onClose: () => void;
   onSubmit: (context: CONTEXT) => void;
+  onSetting: (isOpen: boolean) => void;
 }
 
 export const sideBar = (configs: SideBarConfig) => {
@@ -21,14 +27,13 @@ export const sideBar = (configs: SideBarConfig) => {
   const responseHandler = (response: string) => console.log("Response return is ", response);
 
   const renderContent = (menu: string): HTMLDivElement => {
-    console.log("RenderContent called");
     let el = document.createElement('div');
     switch (menu) {
       case Menu.MENU_TYPE.WRITE_EMAIL:
         el = WriteEmail(responseHandler);
         break;
       case Menu.MENU_TYPE.REPLY_EMAIL:
-        el = RewriteEmail(responseHandler);
+        el = ReplyEmail(responseHandler);
         break;
       case Menu.MENU_TYPE.SUMMARIZE_EMAIL:
         el = SummarizeEmail(responseHandler);
@@ -42,6 +47,12 @@ export const sideBar = (configs: SideBarConfig) => {
       case Menu.MENU_TYPE.TRANSLATE_TO:
         el = TranslateEmail(responseHandler);
         break;
+      case Menu.MENU_TYPE.SETTINGS:
+        el = Settings(responseHandler);
+        break;
+      case Menu.MENU_TYPE.ACTIVATION:
+        el = Activation(responseHandler);
+        break;
       default:
         el.innerHTML = "menu handler not found";
         break;
@@ -50,13 +61,20 @@ export const sideBar = (configs: SideBarConfig) => {
   }
 
   var sideBarContent = `<div class="dflex dflex-column sidebar">
-    <div class="header">
-      <div class="dflex dflex-between">
-        <div class="name">ChatGpt4Gmail</div>
-        <div class="close">X</div>
+    <div class="app-info dflex dflex-between">
+      <div class="app-info-title">${GLOBAL.appName} ${GLOBAL.version}</div>
+      <div class="app-info-close">X</div>
+    </div>
+    <div class="header dflex dflex-between">
+      <div class="header-logo">ChatGpt4Gmail</div>
+      <div class="header-setting">
+        ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 
+          '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4-sheets-setting-open.svg">' 
+          : '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4sheets-setting.svg">'
+        }
       </div>
     </div>
-    <div class="dflex-grow-1 content">${configs.context}</div>
+    <div class="dflex-grow-1 content"></div>
     <div class="footer">Footer</div>
   </div>`
 
@@ -68,11 +86,14 @@ export const sideBar = (configs: SideBarConfig) => {
   sidebarContainer.innerHTML = sideBarContent;
 
   // Attaching events
-  sidebarContainer.querySelector('.close')
+  sidebarContainer.querySelector('.app-info-close')
     ?.addEventListener('click', (e: any) => configs.onClose());
 
   sidebarContainer.querySelector('.content')
     ?.appendChild(renderContent(configs.menu));
+
+  sidebarContainer.querySelector('.header-setting')
+    ?.addEventListener('click', (e: any) => configs.onSetting(configs.menu !== Menu.MENU_TYPE.SETTINGS))
 
   return {
     title: 'ChatGpt4Gmail',

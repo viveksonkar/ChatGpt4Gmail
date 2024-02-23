@@ -1,8 +1,12 @@
+@import "./utils/colors.scss";
 @import "./utils/default.scss";
 @import "./utils/layout.scss";
 @import "./controls/button.scss";
 @import "./controls/label.scss";
 @import "./controls/textarea.scss";
+@import "./components/app-info.scss";
+@import "./components/header.scss";
+@import "./components/content.scss";
 @import "./components/footer.scss";
 @import "./components/prompt.scss";
 @import "./components/sidebar.scss";

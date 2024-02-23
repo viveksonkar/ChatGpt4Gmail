@@ -11,6 +11,6 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   const el = document.createElement('div');
   let ddOptions = writeEmailTypeOptions.map( ({label, content}) => ({label, content}));
   el.appendChild(cmpDropDown(ddOptions, 'SALES'));
-  el.appendChild(cmpTone())
+  el.appendChild(cmpTone());
   return el;
 }
