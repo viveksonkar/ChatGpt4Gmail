@@ -1,0 +1,11 @@
+//restricting css to be applied on extension only
+.cg-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid $input-outline;
+  border-radius: 4px;
+  option {
+    font-size: 14px;
+    padding: 4px;
+  }
+}

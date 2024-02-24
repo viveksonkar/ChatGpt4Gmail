@@ -24,7 +24,10 @@ export interface SideBarConfig {
 
 export const sideBar = (configs: SideBarConfig) => {
 
-  const responseHandler = (response: string) => console.log("Response return is ", response);
+  const responseHandler = (response: string) => {
+    console.log("Response return is ", response);
+    GLOBAL.composeView?.insertTextIntoBodyAtCursor(response);
+  }
 
   const renderContent = (menu: string): HTMLDivElement => {
     let el = document.createElement('div');

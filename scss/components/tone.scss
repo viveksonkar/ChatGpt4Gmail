@@ -1,0 +1,9 @@
+.cg-tone {
+  &-item {
+    padding-bottom: 8px;
+  }
+  &-checkbox {
+    transition: all 1s ease-in-out;
+    border: 1px solid $input-outline;
+  }
+}

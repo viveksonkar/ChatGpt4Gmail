@@ -43,3 +43,10 @@
     height: 40px;
   }
 }
+
+button {
+  &::before,
+  &::after {
+    display:none;
+  }
+}
