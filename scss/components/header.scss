@@ -1,6 +1,7 @@
 .header {
   padding: 8px 12px;
   color: $text-primary;
+  border-bottom: 1px solid $input-outline;
   &-setting {
     width: 24px;
     height: 24px;

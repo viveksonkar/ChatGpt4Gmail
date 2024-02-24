@@ -68,7 +68,7 @@ export const sideBar = (configs: SideBarConfig) => {
       <div class="app-info-title">${GLOBAL.appName} ${GLOBAL.version}</div>
       <div class="app-info-close">X</div>
     </div>
-    <div class="header dflex dflex-between">
+    <div class="header dflex dflex-between dflex-vcenter">
       <div class="header-logo">ChatGpt4Gmail</div>
       <div class="header-setting">
         ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 

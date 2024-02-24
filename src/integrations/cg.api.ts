@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { GLOBAL } from '../utils/global-data';
 
 // Define the URL of the ChatGPT API endpoint
@@ -39,8 +39,11 @@ export const cgApi = async (system: string, user: string,
     console.log('Response from ChatGPT API:', response.data);
     const cgResponse = response.data as CGResponse;
     return cgResponse.choices[0].message.content; // Return the response data
-  } catch (error) {
-    console.error('Error making API request:', error);
-    throw error; // Throw the error to indicate failure
+  } catch (errorResponse: any) {
+    console.error('ChatGPT ERROR:', errorResponse);
+    if(errorResponse?.response?.data?.error?.message) {
+      return errorResponse?.response?.data?.error?.message
+    }
+    throw errorResponse; // Throw the error to indicate failure
   }
 };

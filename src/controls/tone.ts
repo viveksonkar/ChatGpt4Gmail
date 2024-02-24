@@ -1,3 +1,5 @@
+import { cmpDivider } from "./divider";
+
 export const tones = [
   "polite",
   "friendly",
@@ -13,7 +15,11 @@ export const cmpTone = (): HTMLDivElement => {
     <input type="checkbox" class="cg-tone-checkbox" value="${tone}"/>
       ${tone.toUpperCase()}
     </li>`).join("");
-  const cgToneEl = `<ul class="cg-tone-list">${checkBoxes}</ul>`;
+  const cgToneEl = `
+    <label>Tone</label>
+    ${cmpDivider("0 0 16px 0").outerHTML}
+    <ul class="cg-tone-list">${checkBoxes}</ul>
+  `;
   cgTone.innerHTML = cgToneEl;
   return cgTone;
 }
