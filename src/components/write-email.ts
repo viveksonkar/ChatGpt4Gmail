@@ -73,9 +73,9 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
     const emailType = form.querySelector('#cg-email-type');
     const prompt = form.querySelector('#cg-prompt');
     const tone = form.querySelector(".cg-tone-checkbox");
-
-    response.innerHTML = `${emailType} : ${prompt} : ${tone}`;
-    responseEl.style.display = 'block';
+    const formData = new FormData(form);
+    console.log(`EmailType: ${formData.get('email-type')} : PROMPT: ${formData.get('prompt')} : Tone: ${formData.get('tone')}` );
+    response.innerHTML = `${emailType} : ${prompt} : ${tone}: ${formData.get('tone')} : ${JSON.stringify(formData)}`;
 
     /* cgApi("You are gmail expert", "write a promotional email for video creation platform for Instagram, facebook in 50 words").then( apiResponse => {
       responseEl.style.display = 'block';

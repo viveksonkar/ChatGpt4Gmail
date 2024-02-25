@@ -6,6 +6,7 @@ export interface Option {
 export const cmpDropDown = (options: Array<Option>, selected: string, id: string = 'cg-select' ): HTMLSelectElement => {
   let selectNode: HTMLSelectElement = document.createElement('select');
   selectNode.classList.add('cg-select');
+  selectNode.name = 'email-type';
   selectNode.id = id;
   options.forEach( option => {
     let optionEl = document.createElement('option');

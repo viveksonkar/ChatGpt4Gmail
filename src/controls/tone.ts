@@ -13,7 +13,7 @@ export const cmpTone = (): HTMLDivElement => {
   let cgTone = document.createElement('div');
   cgTone.classList.add('cg-tone');
   const checkBoxes = tones.map( tone => `<li class="cg-tone-item">
-    <input type="checkbox" class="cg-tone-checkbox" value="${tone}"/>
+    <input type="checkbox" name="tone" class="cg-tone-checkbox" value="${tone}"/>
       ${capitalize(tone)}
     </li>`).join("");
   const cgToneEl = `

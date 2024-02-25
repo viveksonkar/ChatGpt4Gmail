@@ -12,7 +12,7 @@ export const cgPrompt = (
       <div class="cmpPrompt">
         <label>${title}</label>
         ${cmpDivider("0 0 8px 0").outerHTML}
-        <textarea id="${id}" class="cgPrompt-input"></textarea>
+        <textarea id="${id}" name="prompt" class="cgPrompt-input"></textarea>
       </div>
     `;
     root.innerHTML = prompt;
