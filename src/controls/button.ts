@@ -6,7 +6,7 @@ export const cmpButton = (text: string, type: BUTTON_TYPE,
   cb: (event: any) => void = () => {}) => {
   const el = document.createElement("button");
   el.innerText = text;
-  el.classList.add('btn');
+  el.classList.add('cgbtn');
 
   if (classList) {
     if (typeof classList === 'string') {
@@ -20,15 +20,15 @@ export const cmpButton = (text: string, type: BUTTON_TYPE,
   
   switch(type) {
     case 'PRIMARY':
-      el.classList.add('btn-primary');
-      if(isOutlined) el.classList.add('btn-primary-outlined');
+      el.classList.add('cgbtn-primary');
+      if(isOutlined) el.classList.add('cgbtn-primary-outlined');
       break;
     case 'SECONDARY':
-      el.classList.add('btn-secondary');
-      if(isOutlined) el.classList.add('btn-secondary-outlined');
+      el.classList.add('cgbtn-secondary');
+      if(isOutlined) el.classList.add('cgbtn-secondary-outlined');
       break;
     default:
-      el.classList.add('btn-default')
+      el.classList.add('cgbtn-default')
   }
   el.addEventListener('click', cb);
   return el;  

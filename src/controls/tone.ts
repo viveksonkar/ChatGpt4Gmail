@@ -1,3 +1,4 @@
+import { capitalize } from "lodash";
 import { cmpDivider } from "./divider";
 
 export const tones = [
@@ -13,7 +14,7 @@ export const cmpTone = (): HTMLDivElement => {
   cgTone.classList.add('cg-tone');
   const checkBoxes = tones.map( tone => `<li class="cg-tone-item">
     <input type="checkbox" class="cg-tone-checkbox" value="${tone}"/>
-      ${tone.toUpperCase()}
+      ${capitalize(tone)}
     </li>`).join("");
   const cgToneEl = `
     <label>Tone</label>

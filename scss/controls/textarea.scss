@@ -1,5 +1,12 @@
-textarea {
+.cgPrompt-input {
   border-color: #cecece;
   width: 100%;
   border-radius: 4px;
+  min-height: 80px;
+  padding: 12px;
+  box-sizing: border-box;
+  &:focus, &:focus-visible {
+    border: 1px solid $input-outline;
+    outline: none;
+  }
 }

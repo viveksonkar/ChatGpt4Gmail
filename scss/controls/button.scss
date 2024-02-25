@@ -1,5 +1,5 @@
 
-.btn {
+.cgbtn {
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -28,15 +28,15 @@
       background-color: #139c66;
       border-color: #139c66;
     }
-    &-outlined {
-      color: #027643;
-      border: 1px solid #027643;
-      background: #FFF;
-      &:hover{
-        color: #fff;
-        background-color: #139c66;
-        border-color: #139c66;
-      }
+  }
+  &-primary-outlined {
+    color: #027643;
+    border: 1px solid #027643;
+    background: #FFF;
+    &:hover{
+      color: #fff;
+      background-color: #139c66;
+      border-color: #139c66;
     }
   }
   &-height {

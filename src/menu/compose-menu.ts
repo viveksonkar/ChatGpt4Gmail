@@ -15,7 +15,7 @@ export const composeMenuDD = () => ({
     var isGlobal = false;
     const dropdownContent = Menu.getMenu(isGlobal).map(option => `
       <li>
-        <button class="btn" data-value="${option.value}">
+        <button class="cgbtn" data-value="${option.value}">
           <img src="${option.iconUrl}" alt="${option.name}">${option.name}
         </button>
       </li>
@@ -23,7 +23,7 @@ export const composeMenuDD = () => ({
 
     menu.dropdown.el.innerHTML = `<ul class="compose-menu">${dropdownContent}</ul>`;
 
-    const buttons = menu.dropdown.el.querySelectorAll('.btn');
+    const buttons = menu.dropdown.el.querySelectorAll('.cgbtn');
     buttons.forEach(button => {
       button.addEventListener('click', (e: any) => {
         const value = e.target.dataset.value;
