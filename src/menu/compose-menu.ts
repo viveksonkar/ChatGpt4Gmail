@@ -44,6 +44,14 @@ export const handleDropdownOption = (value: string) => {
       GLOBAL.composeView?.insertTextIntoBodyAtCursor("Summarize email option selected.");
       SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUMMARIZE_EMAIL, true, addThreadSidebar);
       break;
+      case Menu.MENU_TYPE.REWRITE_EMAIL:
+        GLOBAL.composeView?.insertTextIntoBodyAtCursor("Rewrite email option selected.");
+        SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REWRITE_EMAIL, true, addThreadSidebar);
+        break;
+       case Menu.MENU_TYPE.SUGGEST_REPLY:
+        GLOBAL.composeView?.insertTextIntoBodyAtCursor("Suggest email option selected.");
+        SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
+        break;
     // Add cases for other options as needed
     default:
       break;
