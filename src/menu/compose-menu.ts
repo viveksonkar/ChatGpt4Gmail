@@ -52,6 +52,10 @@ export const handleDropdownOption = (value: string) => {
         GLOBAL.composeView?.insertTextIntoBodyAtCursor("Suggest email option selected.");
         SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
         break;
+        case Menu.MENU_TYPE.TRANSLATE_TO:
+          GLOBAL.composeView?.insertTextIntoBodyAtCursor("Translate email option selected.");
+          SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.TRANSLATE_TO, true, addThreadSidebar);
+          break;
     // Add cases for other options as needed
     default:
       break;
