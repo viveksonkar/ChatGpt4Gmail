@@ -39,7 +39,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   el.appendChild(heading);
   el.appendChild(cmpDivider("0 0 16px 0"));
   const form = document.createElement("form");
-  form.appendChild(cmpDropDown(ddOptions, 'SALES', 'cg-email-type'));
+  form.appendChild(cmpDropDown("Email Type", ddOptions, 'SALES', 'cg-email-type'));
   form.appendChild(cmpDivider("0 0 16px 0"));
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'))
   form.appendChild(cmpDivider("0 0 16px 0"));
@@ -73,7 +73,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
     const emailType = form.querySelector('#cg-email-type');
     const prompt = form.querySelector('#cg-prompt');
     const tone = form.querySelector(".cg-tone-checkbox");
-    const formData = new FormData(form);
+    const formData = new FormData(form); //this will return values from form for element using name attribute
     console.log(`EmailType: ${formData.get('email-type')} : PROMPT: ${formData.get('prompt')} : Tone: ${formData.get('tone')}` );
     response.innerHTML = `${emailType} : ${prompt} : ${tone}: ${formData.get('tone')} : ${JSON.stringify(formData)}`;
 

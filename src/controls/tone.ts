@@ -17,8 +17,8 @@ export const cmpTone = (): HTMLDivElement => {
       ${capitalize(tone)}
     </li>`).join("");
   const cgToneEl = `
-    <label>Tone</label>
-    ${cmpDivider("0 0 16px 0").outerHTML}
+    <label class="cg-label">Tone</label>
+    ${cmpDivider("0 0 8px 0").outerHTML}
     <ul class="cg-tone-list">${checkBoxes}</ul>
   `;
   cgTone.innerHTML = cgToneEl;

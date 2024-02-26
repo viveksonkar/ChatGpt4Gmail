@@ -1,19 +1,29 @@
+import { cmpDivider } from "./divider";
+
 export interface Option {
   label: string;
   content: string;
 }
 
-export const cmpDropDown = (options: Array<Option>, selected: string, id: string = 'cg-select' ): HTMLSelectElement => {
-  let selectNode: HTMLSelectElement = document.createElement('select');
-  selectNode.classList.add('cg-select');
-  selectNode.name = 'email-type';
-  selectNode.id = id;
-  options.forEach( option => {
-    let optionEl = document.createElement('option');
-    optionEl.value = option.content;
-    optionEl.selected = option.content === selected;
-    optionEl.text = option.label;
-    selectNode.appendChild(optionEl);
-  });
-  return selectNode;
+export const cmpDropDown = (title: string, options: Array<Option>, 
+  selected: string, id: string = 'cg-select' ): HTMLDivElement => {
+    const root = document.createElement('div');
+    const label = document.createElement('label');
+    label.classList.add('cg-label');
+    label.innerText = title;
+    let selectNode: HTMLSelectElement = document.createElement('select');
+    selectNode.classList.add('cg-select');
+    selectNode.name = 'email-type';
+    selectNode.id = id;
+    options.forEach( option => {
+      let optionEl = document.createElement('option');
+      optionEl.value = option.content;
+      optionEl.selected = option.content === selected;
+      optionEl.text = option.label;
+      selectNode.appendChild(optionEl);
+    });
+    root.appendChild(label);
+    root.appendChild(cmpDivider("0 0  8px 0"));
+    root.appendChild(selectNode);
+  return root;
 }
