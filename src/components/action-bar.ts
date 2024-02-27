@@ -11,8 +11,8 @@ export const cmpActionBar = (
   actionBar.classList.add('action-bar');
   actionBar.classList.add('dflex');
   actionBar.classList.add('dflex-right');
-  actionBar.appendChild(cmpButton(primaryText, 'SECONDARY', undefined, false, primaryCb));
-  actionBar.appendChild(cmpButton(secondaryText, 'PRIMARY', undefined, false, secondaryCb));
+  actionBar.appendChild(cmpButton(primaryText, 'PRIMARY', undefined, false, primaryCb));
+  actionBar.appendChild(cmpButton(secondaryText, 'SECONDARY', undefined, false, secondaryCb));
   actionWrapperEl.appendChild(actionBar);
   return actionWrapperEl;
 }

@@ -16,7 +16,15 @@ export const writeEmailTypeOptions = [
 
 export const WriteEmail = (responseCb: (response: string) => void): HTMLDivElement => {
 
-  const sucessHandler = (btnEv: MouseEvent) => {
+  const successHandler = (btnEv: MouseEvent) => {
+    console.log("Write Email sucess handler called")
+    GLOBAL.sdk?.Compose.openNewComposeView().then( composeView => {
+      GLOBAL.composeView = composeView;
+      GLOBAL.composeView?.insertTextIntoBodyAtCursor(GLOBAL.response);
+      GLOBAL.contentPanelRef?.close();
+    }).catch( error => {
+      GLOBAL.error = `Failed to create new message`;
+    });
     responseCb(GLOBAL.response);
   }
 
@@ -58,8 +66,9 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
 
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
+  response.classList.add('response');
   responseEl.appendChild(response);
-  const actionBar = cmpActionBar('Create Draft', 'Back', sucessHandler, backHandler)
+  const actionBar = cmpActionBar('Create Draft', 'Back', successHandler, backHandler)
   responseEl.appendChild(actionBar);
 
   el.appendChild(responseEl);
@@ -68,16 +77,22 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
     ev.preventDefault();
     form.style.display = 'none';
     loadingEl.style.display = 'block';
-    console.log(ev);
 
-    const emailType = form.querySelector('#cg-email-type');
-    const prompt = form.querySelector('#cg-prompt');
-    const tone = form.querySelector(".cg-tone-checkbox");
     const formData = new FormData(form); //this will return values from form for element using name attribute
+    const emailType = formData.get('email-type');
+    const prompt = formData.get('prompt');
+    const tone = formData.get('tone');
+
     console.log(`EmailType: ${formData.get('email-type')} : PROMPT: ${formData.get('prompt')} : Tone: ${formData.get('tone')}` );
     response.innerHTML = `${emailType} : ${prompt} : ${tone}: ${formData.get('tone')} : ${JSON.stringify(formData)}`;
 
-    /* cgApi("You are gmail expert", "write a promotional email for video creation platform for Instagram, facebook in 50 words").then( apiResponse => {
+    let userMessage = `Write a ${emailType} for ${prompt}`;
+    // TODO - need to see how to get list of tone
+    if(tone) {
+      userMessage = userMessage.concat(`and keep the tone to be ${tone}`)
+    }
+
+    cgApi(`Generate a email based on user content`, userMessage).then( apiResponse => {
       responseEl.style.display = 'block';
       response.innerHTML = apiResponse;
       GLOBAL.response = apiResponse;
@@ -85,7 +100,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
       response.innerHTML = `${JSON.stringify(error)}`;
     }).finally(() => {
       loadingEl.style.display = 'none';
-    }); */
+    });
   });
 
   setDefaultState();

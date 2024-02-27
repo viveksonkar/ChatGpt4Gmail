@@ -7,6 +7,7 @@ import { SummarizeEmail } from "../components/summarize-email";
 import { TranslateEmail } from "../components/translate-email";
 import { WriteEmail } from "../components/write-email";
 import Menu from "../menu/menu";
+import { NavigationMain } from "../menu/navigation-menu";
 import { GLOBAL } from "../utils/global-data";
 
 export enum CONTEXT {
@@ -20,18 +21,21 @@ export interface SideBarConfig {
   onClose: () => void;
   onSubmit: (context: CONTEXT) => void;
   onSetting: (isOpen: boolean) => void;
+  onBack: () => void;
 }
 
 export const sideBar = (configs: SideBarConfig) => {
 
   const responseHandler = (response: string) => {
     console.log("Response return is ", response);
-    GLOBAL.composeView?.insertTextIntoBodyAtCursor(response);
   }
 
   const renderContent = (menu: string): HTMLDivElement => {
     let el = document.createElement('div');
     switch (menu) {
+      case Menu.MENU_TYPE.NAVIGATION_MAIN:
+        el = NavigationMain(responseHandler);
+        break;
       case Menu.MENU_TYPE.WRITE_EMAIL:
         el = WriteEmail(responseHandler);
         break;
@@ -69,7 +73,10 @@ export const sideBar = (configs: SideBarConfig) => {
       <div class="app-info-close">X</div>
     </div>
     <div class="header dflex dflex-between dflex-vcenter">
-      <div class="header-logo">ChatGpt4Gmail</div>
+      <div class="dflex header-toggle">
+        <div class="header-back">&larr;</div>
+        <div class="header-logo">ChatGpt4Gmail</div>
+      </div>
       <div class="header-setting">
         ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 
           '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4-sheets-setting-open.svg">' 
@@ -96,7 +103,10 @@ export const sideBar = (configs: SideBarConfig) => {
     ?.appendChild(renderContent(configs.menu));
 
   sidebarContainer.querySelector('.header-setting')
-    ?.addEventListener('click', (e: any) => configs.onSetting(configs.menu !== Menu.MENU_TYPE.SETTINGS))
+    ?.addEventListener('click', (e: any) => configs.onSetting(configs.menu !== Menu.MENU_TYPE.SETTINGS));
+
+  sidebarContainer.querySelector('.header-back')
+    ?.addEventListener('click', (e: any) => configs.onBack());
 
   return {
     title: 'ChatGpt4Gmail',

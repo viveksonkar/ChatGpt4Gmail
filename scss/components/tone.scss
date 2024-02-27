@@ -1,6 +1,9 @@
 .cg-tone {
   &-item {
     padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
   &-checkbox {
     transition: all 1s ease-in-out;

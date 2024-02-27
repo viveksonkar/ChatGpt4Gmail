@@ -2,6 +2,16 @@
   padding: 8px 12px;
   color: $text-primary;
   border-bottom: 1px solid $input-outline;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  &-toggle{
+    gap: 4px;
+  }
+  &-back {
+    cursor: pointer;
+    font-weight: 700;
+  }
   &-setting {
     width: 24px;
     height: 24px;
@@ -11,8 +21,7 @@
       height: 100%;
     }
   }
-  &-setting {
-    width: 24px;
-    height: 24px;
+  &-logo {
+    font-weight: 700;
   }
 }

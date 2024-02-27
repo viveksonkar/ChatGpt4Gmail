@@ -4,7 +4,7 @@ export const cmplanguageDropDown = ( selected: string, id: string = 'cg-select' 
     let selectNode: HTMLSelectElement = document.createElement('select');
     selectNode.style.marginBottom = "20px";
     selectNode.classList.add('cg-select');
-    selectNode.name = 'email-type';
+    selectNode.name = 'language';
     selectNode.id = id;
     languages.forEach( option => {
       let optionEl = document.createElement('option');

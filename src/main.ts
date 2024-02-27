@@ -8,7 +8,7 @@ import Menu from './menu/menu';
 
 class Main {
     constructor() {
-        this.init();
+      this.init();
     }
 
     init() {
@@ -22,7 +22,7 @@ class Main {
         });
 
         // TO add global sidebar
-        SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.WRITE_EMAIL);
+        SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN);
       });
     }
 }

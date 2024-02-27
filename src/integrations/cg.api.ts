@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { GLOBAL } from '../utils/global-data';
+import { mockCgApiCall } from '../test-data/mock-cg-api';
+import Menu from '../menu/menu';
 
 // Define the URL of the ChatGPT API endpoint
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -32,6 +34,10 @@ export const cgApi = async (system: string, user: string,
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${GLOBAL.cgApiKey}`
   };
+
+  if(GLOBAL.isMock) {
+    return mockCgApiCall(Menu.MENU_TYPE.WRITE_EMAIL);
+  }
 
   try {
     // Make the API request using Axios

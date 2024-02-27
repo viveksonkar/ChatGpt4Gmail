@@ -1,3 +1,16 @@
 .action-bar {
   display: flex;
+  position: absolute;
+  bottom: 0;
+  background: $bg-primary;
+  border-top: 1px solid $input-outline;
+  width: calc(100% - 32px);
+  flex-direction: row-reverse;
+  padding: 8px 16px 42px 0;
+  margin: 0 -12px;
+  gap: 8px;
+}
+
+.response {
+  margin-bottom: 48px;
 }

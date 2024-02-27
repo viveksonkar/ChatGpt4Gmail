@@ -7,7 +7,8 @@ class Menu {
     REWRITE_EMAIL: "REWRITE_EMAIL",
     TRANSLATE_TO: "TRANSLATE_TO",
     SETTINGS: "SETTING",
-    ACTIVATION: "ACTIVATION"
+    ACTIVATION: "ACTIVATION",
+    NAVIGATION_MAIN: "NAVIGATION_MAIN"
   };
   
   static menuItems = [
@@ -21,6 +22,10 @@ class Menu {
 
   static getMenu(isGlobal: boolean) {
     return this.menuItems.filter(menuItem => isGlobal ? menuItem.isGlobal : !menuItem.isGlobal);
+  }
+
+  static getAllMenu() {
+    return this.menuItems;
   }
 };
 

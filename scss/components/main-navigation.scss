@@ -1,0 +1,20 @@
+.main-nav {
+  li button img {
+    width: 24px;
+    height: 24px;
+  }
+  li button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    width: 100%;
+    &:hover {
+      background-color: $button-hover;
+    }
+  }
+}

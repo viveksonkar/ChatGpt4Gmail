@@ -15,6 +15,7 @@
   line-height: 1.5;
   border-radius: 3px;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
   &::before,.compose-menu li,
   &::after {
     display:none;
@@ -38,6 +39,9 @@
       background-color: #139c66;
       border-color: #139c66;
     }
+  }
+  &-secondary {
+    border: 1px solid #139c66;
   }
   &-height {
     height: 40px;

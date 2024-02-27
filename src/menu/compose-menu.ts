@@ -1,6 +1,5 @@
 import * as InboxSDK from '@inboxsdk/core';
 import Menu from './menu';
-import { GLOBAL } from '../utils/global-data';
 import { CONTEXT } from '../controls/sidebar';
 import { SideBarWidget } from '../widgets/sidebar-widget';
 
@@ -35,32 +34,31 @@ export const composeMenuDD = () => ({
 
 export const handleDropdownOption = (value: string) => {
   switch (value) {
+    case Menu.MENU_TYPE.NAVIGATION_MAIN:
+      SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN, true, addThreadSidebar);
+      break;
+    case Menu.MENU_TYPE.WRITE_EMAIL:
+      SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.WRITE_EMAIL, true, addThreadSidebar);
+      break;
     case Menu.MENU_TYPE.REPLY_EMAIL:
-      GLOBAL.composeView?.insertTextIntoBodyAtCursor("Reply for me option selected.");
-      //adds back the clobal sidebar through callback
       SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REPLY_EMAIL, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.SUMMARIZE_EMAIL:
-      GLOBAL.composeView?.insertTextIntoBodyAtCursor("Summarize email option selected.");
       SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUMMARIZE_EMAIL, true, addThreadSidebar);
       break;
-      case Menu.MENU_TYPE.REWRITE_EMAIL:
-        GLOBAL.composeView?.insertTextIntoBodyAtCursor("Rewrite email option selected.");
-        SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REWRITE_EMAIL, true, addThreadSidebar);
-        break;
-       case Menu.MENU_TYPE.SUGGEST_REPLY:
-        GLOBAL.composeView?.insertTextIntoBodyAtCursor("Suggest email option selected.");
-        SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
-        break;
-        case Menu.MENU_TYPE.TRANSLATE_TO:
-          GLOBAL.composeView?.insertTextIntoBodyAtCursor("Translate email option selected.");
-          SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.TRANSLATE_TO, true, addThreadSidebar);
-          break;
-    // Add cases for other options as needed
+    case Menu.MENU_TYPE.REWRITE_EMAIL:
+      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REWRITE_EMAIL, true, addThreadSidebar);
+      break;
+    case Menu.MENU_TYPE.SUGGEST_REPLY:
+      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
+      break;
+    case Menu.MENU_TYPE.TRANSLATE_TO:
+      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.TRANSLATE_TO, true, addThreadSidebar);
+      break;
     default:
       break;
   }
 }
 
-export const addThreadSidebar = () => SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.WRITE_EMAIL);
+export const addThreadSidebar = () => SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN);
 export default composeMenuDD;
