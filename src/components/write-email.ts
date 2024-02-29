@@ -7,6 +7,7 @@ import { cmpActionBar } from "./action-bar";
 import { GLOBAL } from "../utils/global-data";
 import { loader } from "./loader";
 import { cgPrompt } from "../controls/prompt";
+import { heading } from "../controls/heading";
 
 export const writeEmailTypeOptions = [
   { label: 'Sales', content: 'SALES', command: 'Write a sales email' },
@@ -41,10 +42,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   const el = document.createElement('div');
   let ddOptions = writeEmailTypeOptions.map( ({label, content}) => ({label, content}));
 
-  const heading = document.createElement("h3");
-  heading.classList.add('heading-title')
-  heading.innerText = 'Write Email';
-  el.appendChild(heading);
+  el.appendChild(heading('Write Email'));
   el.appendChild(cmpDivider("0 0 16px 0"));
   const form = document.createElement("form");
   form.appendChild(cmpDropDown("Email Type", ddOptions, 'SALES', 'cg-email-type'));

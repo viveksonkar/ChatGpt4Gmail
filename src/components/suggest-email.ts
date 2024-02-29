@@ -1,40 +1,36 @@
-import { cmpButton } from "../controls/button";
+import { cmpDivider } from "../controls/divider";
+import { heading } from "../controls/heading";
 import { cgPrompt } from "../controls/prompt";
+import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
 import { cmpActionBar } from "./action-bar";
+import { cmpActionBarSingle } from "./action-bar-single";
 import { loader } from "./loader";
 
 export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivElement => {
   
-    const sucessHandler = (btnEv: MouseEvent) => {
-      responseCb(GLOBAL.response);
-    }
-  
-    const backHandler = (btnEv: MouseEvent) => {
-      setDefaultState();
-    }
+  const sucessHandler = (btnEv: MouseEvent) => {
+    responseCb(GLOBAL.response);
+  }
 
-    const setDefaultState = () => {
-      form.style.display = 'block';
-      loadingEl.style.display = 'none';
-      responseEl.style.display = 'none';
-    }
+  const backHandler = (btnEv: MouseEvent) => {
+    setDefaultState();
+  }
 
-    const el = document.createElement('div');
+  const setDefaultState = () => {
+    form.style.display = 'block';
+    loadingEl.style.display = 'none';
+    responseEl.style.display = 'none';
+  }
 
-    const heading = document .createElement('h3');
-    heading.classList.add('heading');
-    heading.innerText = 'Suggest Email';
-    el.appendChild(heading);
+  const el = document.createElement('div');
 
-    const form = document.createElement('form');
+  el.appendChild(heading('Suggest Email'));
+  el.appendChild(cmpDivider("0 0 16px 0"));
+
+  const form = document.createElement('form');
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'));
-
-  const singleBtnFooter = document.createElement('div');
-  singleBtnFooter.classList.add('dflex');
-  singleBtnFooter.classList.add('dflex-right');
-  singleBtnFooter.appendChild(cmpButton('Suggest', 'PRIMARY', undefined, true));
-  form.appendChild(singleBtnFooter);
+  form.appendChild(cmpActionBarSingle('Suggest'));
   el.appendChild(form);
   
   const loadingEl = loader();
@@ -44,8 +40,36 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
   const response = document.createElement('div');
   responseEl.appendChild(response);
 
-  const actionBar = cmpActionBar('Create Draft', 'Back', sucessHandler, backHandler)
+  const actionBar = cmpActionBar('Main menu', 'Back', sucessHandler, backHandler)
   responseEl.appendChild(actionBar);
 
+  form.addEventListener('submit', (ev: SubmitEvent) => {
+    ev.preventDefault();
+    const formData = new FormData(form);
+    const prompt = formData.get('prompt');
+
+    let userMessage = `Suggest me what to reply for the below email `;
+    if(prompt) {
+      userMessage = userMessage.concat(` and ${prompt}`)
+    }
+
+    if(GLOBAL.messageView) {
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`);
+    }
+
+    cgApi(`Generate a reply email`, userMessage).then( apiResponse => {
+      form.style.display = 'none';
+      responseEl.style.display = 'block';
+      response.innerHTML = apiResponse;
+      GLOBAL.response = apiResponse;
+    }).catch( (error) => {
+      response.innerHTML = `${JSON.stringify(error)}`;
+    }).finally(() => {
+      loadingEl.style.display = 'none';
+    });
+  });
+
+  setDefaultState();
+
   return el;
-  }
+}

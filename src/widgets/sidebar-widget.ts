@@ -8,6 +8,7 @@ export const SideBarWidget = (context: CONTEXT,
   onClose: () => void = () => {} ) => {
 
     GLOBAL.activeMenu = menu;
+    GLOBAL.context = context;
 
     const onCloseHandler = () => {
       GLOBAL.contentPanelRef?.close();
@@ -35,6 +36,7 @@ export const SideBarWidget = (context: CONTEXT,
     }
 
     const addSidebarContentPanel = (sidebarConfig: SideBarConfig) => {
+      console.log("Adding SidebarPanel with configs => ", sidebarConfig);
       GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar(sidebarConfig)).then( contentPanel => {
         if(GLOBAL.contentPanelRef) {
           GLOBAL.contentPanelRef.close(); //closing previous panel

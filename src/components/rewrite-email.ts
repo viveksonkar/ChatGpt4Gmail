@@ -1,7 +1,11 @@
-import { cmpButton } from "../controls/button";
+import { cmpDivider } from "../controls/divider";
+import { heading } from "../controls/heading";
 import { cgPrompt } from "../controls/prompt";
 import { cmpRadio } from "../controls/radio";
+import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { cmpActionBar } from "./action-bar";
+import { cmpActionBarSingle } from "./action-bar-single";
 import { loader } from "./loader";
 
 export const reWriteEmailOptions = [
@@ -11,8 +15,11 @@ export const reWriteEmailOptions = [
 
 export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivElement => {
   
-  const sucessHandler = (btnEv: MouseEvent) => {
+  const successHandler = (btnEv: MouseEvent) => {
     responseCb(GLOBAL.response);
+    if(GLOBAL.composeView) {
+      GLOBAL.composeView.setBodyHTML(GLOBAL.response);
+    }
   }
 
   const backHandler = (btnEv: MouseEvent) => {
@@ -30,19 +37,13 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
     ({label, content,value}) => ({label, content, value})
   )
 
-  const heading = document.createElement("h3");
-  heading.classList.add('heading-title')
-  heading.innerText = 'Re-Write Email';
-  el.appendChild(heading);
+  el.appendChild(heading('Re-Write Email'));
+  el.appendChild(cmpDivider("0 0 16px 0"));
 
   const form = document.createElement("form");
-  form.appendChild(cmpRadio(radioOptions, 'rephrase', 'cg-email-type'));
+  form.appendChild(cmpRadio(radioOptions, 'rephrase', 'rewrite'));
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'));
-  const singleBtnFooter = document.createElement('div');
-  singleBtnFooter.classList.add('dflex');
-  singleBtnFooter.classList.add('dflex-right');
-  singleBtnFooter.appendChild(cmpButton('Rewrite', 'PRIMARY', undefined, true));
-  form.appendChild(singleBtnFooter);
+  form.appendChild(cmpActionBarSingle('Rewrite'));
 
   el.appendChild(form);
 
@@ -50,6 +51,41 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
   el.appendChild(loadingEl);
 
   const responseEl = document.createElement('div');
+  const response = document.createElement('div');
+  responseEl.appendChild(response);
+  const actionBar = cmpActionBar('Rewrite', 'Back', successHandler, backHandler)
+  responseEl.appendChild(actionBar);
+  el.appendChild(responseEl);
+
+  form.addEventListener('submit', (ev: SubmitEvent) => {
+    ev.preventDefault();
+    form.style.display = 'none';
+    loadingEl.style.display = 'block';
+
+    const formData = new FormData(form); //this will return values from form for element using name attribute
+    const rewriteOption = formData.get('rewrite');
+    const prompt = formData.get('prompt');
+
+    let userMessage = `${rewriteOption}`;
+    if(prompt) {
+      userMessage = userMessage.concat(` and ${prompt}`)
+    }
+    if(GLOBAL.messageView) {
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`)
+    }
+
+    cgApi(``, userMessage).then( apiResponse => {
+      responseEl.style.display = 'block';
+      response.innerHTML = apiResponse;
+      GLOBAL.response = apiResponse;
+    }).catch( (error) => {
+      response.innerHTML = `${JSON.stringify(error)}`;
+    }).finally(() => {
+      loadingEl.style.display = 'none';
+    });
+  });
+
+  setDefaultState();
 
   return el;
 }

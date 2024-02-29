@@ -36,7 +36,7 @@ export const cgApi = async (system: string, user: string,
   };
 
   if(GLOBAL.isMock) {
-    return mockCgApiCall(Menu.MENU_TYPE.WRITE_EMAIL);
+    return mockCgApiCall(GLOBAL.activeMenu);
   }
 
   try {

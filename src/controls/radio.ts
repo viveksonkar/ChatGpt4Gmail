@@ -1,3 +1,5 @@
+import { cmpDivider } from "./divider";
+
 export interface Option {
     label: string;
     content: string;
@@ -24,6 +26,7 @@ export interface Option {
       radioLabel.textContent = option.label;
   
       radioContainer.appendChild(radioInput);
+      radioContainer.appendChild(cmpDivider("0 0 8px 0"));
       radioContainer.appendChild(radioLabel);
   
       radioGroupNode.appendChild(radioContainer);

@@ -1,8 +1,14 @@
-import Menu from "./menu";
+import Menu, { MenuItem } from "./menu";
 import { handleDropdownOption } from "./compose-menu";
+import { CONTEXT } from "../controls/sidebar";
 
-export const NavigationMain = (responseCb: (response: string) => void): HTMLDivElement => {
-  const menuHtml = Menu.getAllMenu().map(option => `
+export const NavigationMain = (context: CONTEXT, responseCb: (response: string) => void): HTMLDivElement => {
+  const menuMap: Record<CONTEXT, Array<MenuItem>> = {
+    [CONTEXT.COMPOSE]: Menu.getComposeMenu(),
+    [CONTEXT.HOME]: Menu.getGlobalMenu(),
+    [CONTEXT.THREAD]: Menu.getAllMenu()
+  }
+  const menuHtml = menuMap[context].map(option => `
     <li>
       <button class="main-nav-item" data-value="${option.value}">
         <img src="${option.iconUrl}" alt="${option.name}">${option.name}

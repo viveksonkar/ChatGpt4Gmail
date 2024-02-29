@@ -2,6 +2,7 @@ import * as InboxSDK from '@inboxsdk/core';
 import Menu from './menu';
 import { CONTEXT } from '../controls/sidebar';
 import { SideBarWidget } from '../widgets/sidebar-widget';
+import { GLOBAL } from '../utils/global-data';
 
 export const composeMenuDD = () => ({
   title: "Gworks",
@@ -35,30 +36,30 @@ export const composeMenuDD = () => ({
 export const handleDropdownOption = (value: string) => {
   switch (value) {
     case Menu.MENU_TYPE.NAVIGATION_MAIN:
-      SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.NAVIGATION_MAIN, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.WRITE_EMAIL:
-      SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.WRITE_EMAIL, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.WRITE_EMAIL, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.REPLY_EMAIL:
-      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REPLY_EMAIL, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.REPLY_EMAIL, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.SUMMARIZE_EMAIL:
-      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUMMARIZE_EMAIL, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.SUMMARIZE_EMAIL, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.REWRITE_EMAIL:
-      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.REWRITE_EMAIL, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.REWRITE_EMAIL, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.SUGGEST_REPLY:
-      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.SUGGEST_REPLY, true, addThreadSidebar);
       break;
     case Menu.MENU_TYPE.TRANSLATE_TO:
-      SideBarWidget(CONTEXT.COMPOSE, Menu.MENU_TYPE.TRANSLATE_TO, true, addThreadSidebar);
+      SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.TRANSLATE_TO, true, addThreadSidebar);
       break;
     default:
       break;
   }
 }
 
-export const addThreadSidebar = () => SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN);
+export const addThreadSidebar = () => SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.NAVIGATION_MAIN);
 export default composeMenuDD;

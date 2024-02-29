@@ -1,7 +1,7 @@
 .action-bar {
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   background: $bg-primary;
   border-top: 1px solid $input-outline;
   width: calc(100% - 32px);

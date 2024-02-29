@@ -1,3 +1,4 @@
+import { ContentPanelDescriptor } from "@inboxsdk/core";
 import { Activation } from "../components/activation";
 import { ReplyEmail } from "../components/reply-email";
 import { RewriteEmail } from "../components/rewrite-email";
@@ -9,9 +10,10 @@ import { WriteEmail } from "../components/write-email";
 import Menu from "../menu/menu";
 import { NavigationMain } from "../menu/navigation-menu";
 import { GLOBAL } from "../utils/global-data";
+import { interval } from "rxjs";
 
 export enum CONTEXT {
-  'COMPOSE','THREAD'
+  'COMPOSE','THREAD','HOME'
 }
 
 export interface SideBarConfig {
@@ -24,7 +26,7 @@ export interface SideBarConfig {
   onBack: () => void;
 }
 
-export const sideBar = (configs: SideBarConfig) => {
+export const sideBar = (configs: SideBarConfig): ContentPanelDescriptor => {
 
   const responseHandler = (response: string) => {
     console.log("Response return is ", response);
@@ -34,7 +36,7 @@ export const sideBar = (configs: SideBarConfig) => {
     let el = document.createElement('div');
     switch (menu) {
       case Menu.MENU_TYPE.NAVIGATION_MAIN:
-        el = NavigationMain(responseHandler);
+        el = NavigationMain(configs.context, responseHandler);
         break;
       case Menu.MENU_TYPE.WRITE_EMAIL:
         el = WriteEmail(responseHandler);
@@ -76,6 +78,7 @@ export const sideBar = (configs: SideBarConfig) => {
       <div class="dflex header-toggle">
         <div class="header-back">&larr;</div>
         <div class="header-logo">ChatGpt4Gmail</div>
+        <div class="rxjs-test">RXJS</div>
       </div>
       <div class="header-setting">
         ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 
@@ -107,6 +110,14 @@ export const sideBar = (configs: SideBarConfig) => {
 
   sidebarContainer.querySelector('.header-back')
     ?.addEventListener('click', (e: any) => configs.onBack());
+
+  
+  interval(1000).subscribe((num) => {
+    const rxjsTest = sidebarContainer.querySelector('.rxjs-test')
+    if(rxjsTest) {
+      rxjsTest.innerHTML = num + '';
+    }
+  });
 
   return {
     title: 'ChatGpt4Gmail',
