@@ -22,31 +22,23 @@ class Main {
           console.log("registerComposeViewHandler")
           GLOBAL.composeView = composeView;
           GLOBAL.composeView.addButton(composeMenuDD());
-          GLOBAL.threadRowCounter = 0;
         });
 
         GLOBAL.sdk.Lists.registerThreadRowViewHandler((threadRowView: InboxSDK.ThreadRowView) => {
           GLOBAL.threadRowView = threadRowView;
-          console.log("registerThreadRowViewHandler: ", GLOBAL.threadRowCounter)
-          if(GLOBAL.threadRowCounter === 0) {
-            SideBarWidget(CONTEXT.HOME, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
-          }
-          GLOBAL.threadRowCounter = GLOBAL.threadRowCounter + 1;
+          SideBarWidget(CONTEXT.HOME, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
         });
 
         GLOBAL.sdk.Conversations.registerThreadViewHandler((threadView) => {
           console.log("registerThreadViewHandler")
           GLOBAL.threadView = threadView;
           composeThreadView(threadView); 
-          GLOBAL.threadRowCounter = 0;
-
         });
         
         GLOBAL.sdk.Conversations.registerMessageViewHandler((messageView) => {
           console.log("registerMessageViewHandler")
           GLOBAL.messageView = messageView;
           SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
-          GLOBAL.threadRowCounter = 0;
         })
       });
     }

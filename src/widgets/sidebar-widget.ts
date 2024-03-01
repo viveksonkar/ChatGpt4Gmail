@@ -20,7 +20,7 @@ export const SideBarWidget = (context: CONTEXT,
     };
 
     const onSettingHandler = (isOpen: boolean) => {
-      addSidebarContentPanel({
+      GLOBAL.sideBarConfigs$.next({
         ...sidebarConfig, 
         menu: isOpen ? Menu.MENU_TYPE.SETTINGS : Menu.MENU_TYPE.NAVIGATION_MAIN,
         isDefaultOpen: true
@@ -28,19 +28,15 @@ export const SideBarWidget = (context: CONTEXT,
     }
 
     const onBackHandler = () => {
-      addSidebarContentPanel({
+      GLOBAL.sideBarConfigs$.next({
         ...sidebarConfig, 
         menu: Menu.MENU_TYPE.NAVIGATION_MAIN,
         isDefaultOpen: true
       })
     }
 
-    const addSidebarContentPanel = (sidebarConfig: SideBarConfig) => {
-      console.log("Adding SidebarPanel with configs => ", sidebarConfig);
-      GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar(sidebarConfig)).then( contentPanel => {
-        if(GLOBAL.contentPanelRef) {
-          GLOBAL.contentPanelRef.close(); //closing previous panel
-        }
+    const addSidebarContentPanel = () => {
+      GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar()).then( contentPanel => {
         GLOBAL.contentPanelRef = contentPanel; // adding new panel
         if(sidebarConfig.isDefaultOpen && GLOBAL.contentPanelRef) {
           GLOBAL.contentPanelRef.open();
@@ -58,5 +54,10 @@ export const SideBarWidget = (context: CONTEXT,
       onBack: onBackHandler
     }
 
-    addSidebarContentPanel(sidebarConfig);
+    GLOBAL.sideBarConfigs$.next(sidebarConfig);
+
+    // ensuring that only once it is added.
+    if(!GLOBAL.contentPanelRef) {
+      addSidebarContentPanel();
+    }
 }

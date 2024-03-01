@@ -1,6 +1,7 @@
 import * as InboxSDK from '@inboxsdk/core';
 import Menu from '../menu/menu';
-import { CONTEXT } from '../controls/sidebar';
+import { CONTEXT, SideBarConfig, defaultSideBarConfigs } from '../controls/sidebar';
+import { BehaviorSubject } from 'rxjs';
 
 export class GlobalData {
   contentPanelRef: InboxSDK.ContentPanelView | null = null;
@@ -8,7 +9,6 @@ export class GlobalData {
   composeView: InboxSDK.ComposeView | null = null;
   threadView: InboxSDK.ThreadView | null = null;
   threadRowView: InboxSDK.ThreadRowView | null = null;
-  threadRowCounter: number =  0;
   messageView: InboxSDK.MessageView | null = null;
   appName: string = "ChatGpt4Gmail";
   version = "v0.1";
@@ -16,6 +16,7 @@ export class GlobalData {
   response: string = "";
   activeMenu: string = Menu.MENU_TYPE.NAVIGATION_MAIN;
   context: CONTEXT = 2;
+  sideBarConfigs$ = new BehaviorSubject<SideBarConfig>(defaultSideBarConfigs);
   isMock = true;
   error: string | null = null;
 }

@@ -10,7 +10,7 @@ import { WriteEmail } from "../components/write-email";
 import Menu from "../menu/menu";
 import { NavigationMain } from "../menu/navigation-menu";
 import { GLOBAL } from "../utils/global-data";
-import { interval } from "rxjs";
+import { debounceTime } from "rxjs";
 
 export enum CONTEXT {
   'COMPOSE','THREAD','HOME'
@@ -26,15 +26,25 @@ export interface SideBarConfig {
   onBack: () => void;
 }
 
-export const sideBar = (configs: SideBarConfig): ContentPanelDescriptor => {
+export const defaultSideBarConfigs = {
+  context: CONTEXT.HOME,
+  menu: Menu.MENU_TYPE.NAVIGATION_MAIN,
+  isDefaultOpen: false,
+  onClose: () => {},
+  onSubmit: (context: CONTEXT) => {},
+  onSetting: (isOpen: boolean) => {},
+  onBack: () => {}
+};
+
+export const sideBar = (): ContentPanelDescriptor => {
 
   const responseHandler = (response: string) => {
     console.log("Response return is ", response);
   }
 
-  const renderContent = (menu: string): HTMLDivElement => {
+  const renderContent = (configs: SideBarConfig): HTMLDivElement => {
     let el = document.createElement('div');
-    switch (menu) {
+    switch (configs.menu) {
       case Menu.MENU_TYPE.NAVIGATION_MAIN:
         el = NavigationMain(configs.context, responseHandler);
         break;
@@ -69,55 +79,59 @@ export const sideBar = (configs: SideBarConfig): ContentPanelDescriptor => {
     return el;
   }
 
-  var sideBarContent = `<div class="dflex dflex-column sidebar">
-    <div class="app-info dflex dflex-between">
-      <div class="app-info-title">${GLOBAL.appName} ${GLOBAL.version}</div>
-      <div class="app-info-close">X</div>
-    </div>
-    <div class="header dflex dflex-between dflex-vcenter">
-      <div class="dflex header-toggle">
-        <div class="header-back">&larr;</div>
-        <div class="header-logo">ChatGpt4Gmail</div>
-        <div class="rxjs-test">RXJS</div>
-      </div>
-      <div class="header-setting">
-        ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 
-          '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4-sheets-setting-open.svg">' 
-          : '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4sheets-setting.svg">'
-        }
-      </div>
-    </div>
-    <div class="dflex-grow-1 content"></div>
-    <div class="footer">Footer</div>
-  </div>`
-
   // Create a container element for the sidebar
   var sidebarContainer = document.createElement('div');
   sidebarContainer.style.width = '100%'; // Adjust width as needed
   sidebarContainer.style.backgroundColor = '#f3f3f3'; // Customize background color
   sidebarContainer.style.height = '100vh';
-  sidebarContainer.innerHTML = sideBarContent;
 
-  // Attaching events
-  sidebarContainer.querySelector('.app-info-close')
-    ?.addEventListener('click', (e: any) => configs.onClose());
+  GLOBAL.sideBarConfigs$.pipe(debounceTime(500)).subscribe( configs => {
+    console.log("Sidebar opened with configs: ", configs);
+    var sideBarContent = `<div class="dflex dflex-column sidebar">
+      <div class="app-info dflex dflex-between">
+        <div class="app-info-title">${GLOBAL.appName} ${GLOBAL.version}</div>
+        <div class="app-info-close">X</div>
+      </div>
+      <div class="header dflex dflex-between dflex-vcenter">
+        <div class="dflex header-toggle">
+          <div class="header-back">&larr;</div>
+          <div class="header-logo">ChatGpt4Gmail</div>
+        </div>
+        <div class="header-setting">
+          ${ configs.menu !== Menu.MENU_TYPE.SETTINGS ? 
+            '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4-sheets-setting-open.svg">' 
+            : '<img src="https://chatgpt4sheets.com/cg4sheets-assets/cg4sheets-setting.svg">'
+          }
+        </div>
+      </div>
+      <div class="dflex-grow-1 content"></div>
+      <div class="footer">Footer</div>
+    </div>`;
 
-  sidebarContainer.querySelector('.content')
-    ?.appendChild(renderContent(configs.menu));
+    sidebarContainer.innerHTML = sideBarContent;
 
-  sidebarContainer.querySelector('.header-setting')
-    ?.addEventListener('click', (e: any) => configs.onSetting(configs.menu !== Menu.MENU_TYPE.SETTINGS));
+    // Attaching events
+    sidebarContainer.querySelector('.app-info-close')
+      ?.addEventListener('click', (e: any) => configs.onClose());
 
-  sidebarContainer.querySelector('.header-back')
-    ?.addEventListener('click', (e: any) => configs.onBack());
+    sidebarContainer.querySelector('.content')
+      ?.appendChild(renderContent(configs));
 
-  
-  interval(1000).subscribe((num) => {
-    const rxjsTest = sidebarContainer.querySelector('.rxjs-test')
-    if(rxjsTest) {
-      rxjsTest.innerHTML = num + '';
+    sidebarContainer.querySelector('.header-setting')
+      ?.addEventListener('click', (e: any) => configs.onSetting(configs.menu !== Menu.MENU_TYPE.SETTINGS));
+
+    sidebarContainer.querySelector('.header-back')
+      ?.addEventListener('click', (e: any) => configs.onBack());
+    
+    const headerBackBtn = sidebarContainer.querySelector('.header-back');
+    if(headerBackBtn && configs.menu === Menu.MENU_TYPE.NAVIGATION_MAIN) {
+      (headerBackBtn as HTMLDivElement).style.display = 'none';
     }
-  });
+
+    if(configs.isDefaultOpen && GLOBAL.contentPanelRef) {
+      GLOBAL.contentPanelRef.open();
+    }
+  })
 
   return {
     title: 'ChatGpt4Gmail',
