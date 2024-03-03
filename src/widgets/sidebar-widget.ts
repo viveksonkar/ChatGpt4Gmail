@@ -7,7 +7,7 @@ export const SideBarWidget = (context: CONTEXT,
   isDefaultOpen: boolean = false,
   onClose: () => void = () => {} ) => {
 
-    GLOBAL.activeMenu = menu;
+    /* GLOBAL.activeMenu = menu;
     GLOBAL.context = context;
 
     const onCloseHandler = () => {
@@ -33,18 +33,18 @@ export const SideBarWidget = (context: CONTEXT,
         menu: Menu.MENU_TYPE.NAVIGATION_MAIN,
         isDefaultOpen: true
       })
-    }
+    } */
 
     const addSidebarContentPanel = () => {
-      GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar()).then( contentPanel => {
+      /* GLOBAL.sdk?.Global.addSidebarContentPanel(sideBar()).then( contentPanel => {
         GLOBAL.contentPanelRef = contentPanel; // adding new panel
         if(sidebarConfig.isDefaultOpen && GLOBAL.contentPanelRef) {
           GLOBAL.contentPanelRef.open();
         }
-      });
+      }); */
     }
 
-    let sidebarConfig: SideBarConfig = {
+    /* let sidebarConfig: SideBarConfig = {
       context: context,
       menu: menu,
       isDefaultOpen: isDefaultOpen,
@@ -54,10 +54,10 @@ export const SideBarWidget = (context: CONTEXT,
       onBack: onBackHandler
     }
 
-    GLOBAL.sideBarConfigs$.next(sidebarConfig);
+    GLOBAL.sideBarConfigs$.next(sidebarConfig); */
 
     // ensuring that only once it is added.
-    if(!GLOBAL.contentPanelRef) {
+    /* if(!GLOBAL.contentPanelRef) {
       addSidebarContentPanel();
-    }
+    } */
 }

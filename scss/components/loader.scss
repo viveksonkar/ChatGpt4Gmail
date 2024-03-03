@@ -16,6 +16,17 @@
   }
 }
 
+.loader {
+  position: absolute;
+  top: 75px;
+  text-align: center;
+  width: 100%;
+  height: calc(100% - 125px);
+  background: white;
+  flex-grow: 1;
+  padding-top: 100px;
+}
+
 .cg-loader {
   text-align: center;
   width: 100%;

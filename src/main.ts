@@ -3,8 +3,7 @@ import composeMenuDD from './menu/compose-menu';
 import { ASCII_ART } from './utils/ascii-art';
 import { GLOBAL } from './utils/global-data';
 import { composeThreadView } from './controls/threadView';
-import { SideBarWidget } from './widgets/sidebar-widget';
-import { CONTEXT } from './controls/sidebar';
+import { CONTEXT, sideBar } from './controls/sidebar';
 import Menu from './menu/menu';
 
 class Main {
@@ -19,27 +18,41 @@ class Main {
         GLOBAL.sdk = sdk;
         // the SDK has been loaded, now do something with it!
         GLOBAL.sdk.Compose.registerComposeViewHandler((composeView) => {
-          console.log("registerComposeViewHandler")
           GLOBAL.composeView = composeView;
           GLOBAL.composeView.addButton(composeMenuDD());
+          /* GLOBAL.sideBarConfigs$.next({
+            ...GLOBAL.sideBarConfigs$.value,
+            context: CONTEXT.COMPOSE,
+            isDefaultOpen: true
+          }); */
         });
 
         GLOBAL.sdk.Lists.registerThreadRowViewHandler((threadRowView: InboxSDK.ThreadRowView) => {
           GLOBAL.threadRowView = threadRowView;
-          SideBarWidget(CONTEXT.HOME, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
+          GLOBAL.sideBarConfigs$.next({
+            ...GLOBAL.sideBarConfigs$.value,
+            context: CONTEXT.HOME,
+            menu: Menu.MENU_TYPE.NAVIGATION_MAIN,
+            isDefaultOpen: true
+          });
         });
 
         GLOBAL.sdk.Conversations.registerThreadViewHandler((threadView) => {
-          console.log("registerThreadViewHandler")
           GLOBAL.threadView = threadView;
           composeThreadView(threadView); 
         });
         
         GLOBAL.sdk.Conversations.registerMessageViewHandler((messageView) => {
-          console.log("registerMessageViewHandler")
           GLOBAL.messageView = messageView;
-          SideBarWidget(CONTEXT.THREAD, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
-        })
+          GLOBAL.sideBarConfigs$.next({
+            ...GLOBAL.sideBarConfigs$.value,
+            context: CONTEXT.THREAD,
+            menu: Menu.MENU_TYPE.NAVIGATION_MAIN,
+            isDefaultOpen: true
+          });
+        });
+
+        sideBar();
       });
     }
 }

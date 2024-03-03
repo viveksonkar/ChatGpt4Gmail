@@ -5,7 +5,6 @@ import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
 import { cmpActionBar } from "./action-bar";
 import { cmpActionBarSingle } from "./action-bar-single";
-import { loader } from "./loader";
 
 export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivElement => {
   
@@ -19,7 +18,6 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   const setDefaultState = () => {
     form.style.display = 'block';
-    loadingEl.style.display = 'none';
     responseEl.style.display = 'none';
   }
 
@@ -33,9 +31,6 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
   form.appendChild(cmpActionBarSingle('Suggest'));
   el.appendChild(form);
   
-  const loadingEl = loader();
-  el.appendChild(loadingEl);
-
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
   responseEl.appendChild(response);
@@ -45,6 +40,7 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
+    GLOBAL.loader$.next(true);
     const formData = new FormData(form);
     const prompt = formData.get('prompt');
 
@@ -65,7 +61,7 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
     }).finally(() => {
-      loadingEl.style.display = 'none';
+      GLOBAL.loader$.next(false);
     });
   });
 

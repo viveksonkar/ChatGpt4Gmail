@@ -34,7 +34,7 @@ export const composeMenuDD = () => ({
 });
 
 export const handleDropdownOption = (value: string) => {
-  switch (value) {
+  /* switch (value) {
     case Menu.MENU_TYPE.NAVIGATION_MAIN:
       SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.NAVIGATION_MAIN, true, addThreadSidebar);
       break;
@@ -58,7 +58,11 @@ export const handleDropdownOption = (value: string) => {
       break;
     default:
       break;
-  }
+  } */
+  GLOBAL.sideBarConfigs$.next({
+    ...GLOBAL.sideBarConfigs$.value,
+    menu: value
+  })
 }
 
 export const addThreadSidebar = () => SideBarWidget(GLOBAL.context, Menu.MENU_TYPE.NAVIGATION_MAIN);

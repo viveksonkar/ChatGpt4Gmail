@@ -5,7 +5,7 @@ export const mockCgApiCall = (responseType: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(mockHandler(responseType));
-    }, 500);
+    }, 2000);
   });
 }
 

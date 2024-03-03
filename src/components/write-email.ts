@@ -5,7 +5,6 @@ import { cmpTone } from "../controls/tone";
 import { cgApi } from "../integrations/cg.api";
 import { cmpActionBar } from "./action-bar";
 import { GLOBAL } from "../utils/global-data";
-import { loader } from "./loader";
 import { cgPrompt } from "../controls/prompt";
 import { heading } from "../controls/heading";
 
@@ -35,7 +34,6 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
 
   const setDefaultState = () => {
     form.style.display = 'block';
-    loadingEl.style.display = 'none';
     responseEl.style.display = 'none';
   }
 
@@ -59,9 +57,6 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   form.appendChild(singleBtnFooter);
   el.appendChild(form);
 
-  const loadingEl = loader();
-  el.appendChild(loadingEl);
-
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
   response.classList.add('response');
@@ -74,7 +69,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
     form.style.display = 'none';
-    loadingEl.style.display = 'block';
+    GLOBAL.loader$.next(true);
 
     const formData = new FormData(form); //this will return values from form for element using name attribute
     const emailType = formData.get('email-type');
@@ -97,7 +92,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
     }).finally(() => {
-      loadingEl.style.display = 'none';
+      GLOBAL.loader$.next(false)
     });
   });
 

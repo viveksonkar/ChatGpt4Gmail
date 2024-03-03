@@ -1,5 +1,4 @@
 import * as InboxSDK from '@inboxsdk/core';
-import Menu from '../menu/menu';
 import { CONTEXT, SideBarConfig, defaultSideBarConfigs } from '../controls/sidebar';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,9 +13,9 @@ export class GlobalData {
   version = "v0.1";
   cgApiKey: string = "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";
   response: string = "";
-  activeMenu: string = Menu.MENU_TYPE.NAVIGATION_MAIN;
   context: CONTEXT = 2;
   sideBarConfigs$ = new BehaviorSubject<SideBarConfig>(defaultSideBarConfigs);
+  loader$ = new BehaviorSubject<boolean>(false);
   isMock = true;
   error: string | null = null;
 }

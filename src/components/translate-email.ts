@@ -4,7 +4,6 @@ import { cmplanguageDropDown } from "../controls/languageDropDown";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
 import { cmpActionBarSingle } from "./action-bar-single";
-import { loader } from "./loader";
 
 export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivElement => {
   
@@ -18,7 +17,6 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
 
   const setDefaultState = () => {
     form.style.display = 'block';
-    loadingEl.style.display = 'none';
     responseEl.style.display = 'none';
   }
   
@@ -32,9 +30,6 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
   form.appendChild(cmpActionBarSingle('Translate'));
   el.appendChild(form);
 
-  const loadingEl = loader();
-  el.appendChild(loadingEl);
-
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
   responseEl.appendChild(response);
@@ -43,6 +38,7 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
 
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
+    GLOBAL.loader$.next(true);
     const formData = new FormData(form);
     const prompt = formData.get('prompt');
 
@@ -63,7 +59,7 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
     }).finally(() => {
-      loadingEl.style.display = 'none';
+      GLOBAL.loader$.next(false);
     });
   });
 
