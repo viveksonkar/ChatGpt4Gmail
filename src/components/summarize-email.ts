@@ -3,6 +3,7 @@ import { heading } from "../controls/heading";
 import { cgPrompt } from "../controls/prompt";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { htmlFormatting } from "../utils/library-fn";
 import { cmpActionBarSingle } from "./action-bar-single";
 
 export const SummarizeEmail = (responseCb: (response: string) => void): HTMLDivElement => {
@@ -48,13 +49,15 @@ export const SummarizeEmail = (responseCb: (response: string) => void): HTMLDivE
     }
 
     if(GLOBAL.messageView) {
-      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`);
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`);
     }
 
-    cgApi(`This this email from gmail`, userMessage).then( apiResponse => {
+    console.log(`[SummarizeEmail: payload to cg: ${userMessage}]`);
+
+    cgApi(`This email from gmail`, userMessage).then( apiResponse => {
       form.style.display = 'none';
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);;
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;

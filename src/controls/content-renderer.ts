@@ -8,10 +8,15 @@ import { TranslateEmail } from "../components/translate-email";
 import { WriteEmail } from "../components/write-email";
 import Menu from "../menu/menu";
 import { NavigationMain } from "../menu/navigation-menu";
+import { GLOBAL } from "../utils/global-data";
 import { SideBarConfig } from "./sidebar";
 
 export const renderContent = (configs: SideBarConfig, responseHandler: (response: string) => void): HTMLDivElement => {
   let el = document.createElement('div');
+  if(!GLOBAL.isActivated) {
+    el = Activation(responseHandler);
+    return el;
+  }
   switch (configs.menu) {
     case Menu.MENU_TYPE.NAVIGATION_MAIN:
       el = NavigationMain(configs.context, responseHandler);

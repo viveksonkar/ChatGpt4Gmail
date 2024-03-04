@@ -4,6 +4,7 @@ import { cgPrompt } from "../controls/prompt";
 import { cmpTone } from "../controls/tone";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { htmlFormatting } from "../utils/library-fn";
 import { cmpActionBar } from "./action-bar";
 import { cmpActionBarSingle } from "./action-bar-single";
 
@@ -11,7 +12,11 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
   
   const successHandler = (btnEv: MouseEvent) => {
     console.log("Reply Email sucess handler called");
-    GLOBAL.composeView?.setBodyText(GLOBAL.response);
+    GLOBAL.composeView ? GLOBAL.composeView.setBodyText(GLOBAL.response) :  
+    GLOBAL.sdk?.Compose.openNewComposeView().then( composeView => {
+      GLOBAL.composeView = composeView;
+      composeView.setBodyText(GLOBAL.response);
+    })
     responseCb(GLOBAL.response);
   }
 
@@ -48,18 +53,24 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
     const prompt = formData.get('prompt');
     const tone = formData.get('tone');
 
-    let userMessage = `Write a reply email `;
+    let userMessage = `Write a reply email for the below email `;
     if(tone) {
       userMessage = userMessage.concat(`that is ${tone}`);
     }
     if(prompt) {
       userMessage = userMessage.concat(` and ${prompt}`)
     }
+    if(GLOBAL.messageView) {
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`);
+      console.log("Message from the email", userMessage)
+    }
+
+    console.log(`[ReplyEmail: payload to cg: ${userMessage}]`);
 
     cgApi(`Generate a reply email`, userMessage).then( apiResponse => {
       replyEmailForm.style.display = 'none';
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);;
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;

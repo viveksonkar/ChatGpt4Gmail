@@ -1,6 +1,7 @@
 import { settingIcon } from "../controls/setting-icon";
 import Menu from "../menu/menu";
 import { GLOBAL } from "../utils/global-data";
+import { publishNewMenu } from "./publish-sidebar-configs";
 
 /** 
  <div class="header dflex dflex-between dflex-vcenter">
@@ -44,25 +45,13 @@ export const header = () => {
   header.appendChild(headerSetting);
 
   headerSetting.addEventListener('click', (ev: MouseEvent) => {
-    if(Menu.MENU_TYPE.SETTINGS !== GLOBAL.sideBarConfigs$.value.menu){
-      GLOBAL.sideBarConfigs$.next({
-        ...GLOBAL.sideBarConfigs$.value,
-        menu: Menu.MENU_TYPE.SETTINGS
-      })
-    } else {
-      GLOBAL.sideBarConfigs$.next({
-        ...GLOBAL.sideBarConfigs$.value,
-        menu: Menu.MENU_TYPE.NAVIGATION_MAIN
-      })
-    }
+    const menuToTrigger = Menu.MENU_TYPE.SETTINGS !== GLOBAL.sideBarConfigs$.value.menu ? Menu.MENU_TYPE.SETTINGS : Menu.MENU_TYPE.NAVIGATION_MAIN;
+    publishNewMenu(menuToTrigger);
     console.log(`[ CG4Gmail setting icon clicked: ${GLOBAL.sideBarConfigs$.value.menu} ]`);
   });
 
   headerBack.addEventListener('click', (ev: MouseEvent) => {
-    GLOBAL.sideBarConfigs$.next({
-      ...GLOBAL.sideBarConfigs$.value,
-      menu: Menu.MENU_TYPE.NAVIGATION_MAIN
-    })
+    publishNewMenu(Menu.MENU_TYPE.NAVIGATION_MAIN);
   });
 
   GLOBAL.sideBarConfigs$.subscribe( configs => {

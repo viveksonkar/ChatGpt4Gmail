@@ -3,6 +3,7 @@ import { heading } from "../controls/heading";
 import { cgPrompt } from "../controls/prompt";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { htmlFormatting } from "../utils/library-fn";
 import { cmpActionBar } from "./action-bar";
 import { cmpActionBarSingle } from "./action-bar-single";
 
@@ -23,7 +24,7 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   const el = document.createElement('div');
 
-  el.appendChild(heading('Suggest Email'));
+  el.appendChild(heading('Suggest Reply'));
   el.appendChild(cmpDivider("0 0 16px 0"));
 
   const form = document.createElement('form');
@@ -37,6 +38,7 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   const actionBar = cmpActionBar('Main menu', 'Back', sucessHandler, backHandler)
   responseEl.appendChild(actionBar);
+  el.appendChild(responseEl);
 
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
@@ -50,13 +52,15 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
     }
 
     if(GLOBAL.messageView) {
-      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`);
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`);
     }
 
+    console.log(`[SuggestEmail: payload to cg: ${userMessage}]`);
+    
     cgApi(`Generate a reply email`, userMessage).then( apiResponse => {
       form.style.display = 'none';
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;

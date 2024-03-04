@@ -15,7 +15,8 @@ class Menu {
     TRANSLATE_TO: "TRANSLATE_TO",
     SETTINGS: "SETTING",
     ACTIVATION: "ACTIVATION",
-    NAVIGATION_MAIN: "NAVIGATION_MAIN"
+    NAVIGATION_MAIN: "NAVIGATION_MAIN",
+    LICENSE: "LICENSE"
   };
   
   static menuItems: Array<MenuItem> = [

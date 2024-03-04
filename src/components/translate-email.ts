@@ -3,6 +3,7 @@ import { heading } from "../controls/heading";
 import { cmplanguageDropDown } from "../controls/languageDropDown";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { htmlFormatting } from "../utils/library-fn";
 import { cmpActionBarSingle } from "./action-bar-single";
 
 export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivElement => {
@@ -40,21 +41,22 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
     ev.preventDefault();
     GLOBAL.loader$.next(true);
     const formData = new FormData(form);
+    const language = formData.get('language');
     const prompt = formData.get('prompt');
 
-    let userMessage = `Summarize the email below `;
+    let userMessage = `Translate this email to ${language}`;
     if(prompt) {
       userMessage = userMessage.concat(` and ${prompt}`)
     }
 
     if(GLOBAL.messageView) {
-      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`);
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`);
     }
 
     cgApi(`This this email from gmail`, userMessage).then( apiResponse => {
       form.style.display = 'none';
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);;
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;

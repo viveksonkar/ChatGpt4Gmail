@@ -4,6 +4,7 @@ import { cgPrompt } from "../controls/prompt";
 import { cmpRadio } from "../controls/radio";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
+import { htmlFormatting } from "../utils/library-fn";
 import { cmpActionBar } from "./action-bar";
 import { cmpActionBarSingle } from "./action-bar-single";
 
@@ -66,12 +67,14 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
       userMessage = userMessage.concat(` and ${prompt}`)
     }
     if(GLOBAL.messageView) {
-      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement()}`)
+      userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`)
     }
+
+    console.log(`[RewriteEmail: payload to cg: ${userMessage}]`);
 
     cgApi(``, userMessage).then( apiResponse => {
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);;
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
