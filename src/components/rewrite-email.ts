@@ -32,6 +32,7 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
   }
   
   const el = document.createElement('div');
+  
   let radioOptions = reWriteEmailOptions.map(
     ({label, content,value}) => ({label, content, value})
   )
@@ -40,6 +41,9 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
   el.appendChild(cmpDivider("0 0 16px 0"));
 
   const form = document.createElement("form");
+  form.classList.add('animate__animated');
+  form.classList.add('animate__fadeIn');
+  
   form.appendChild(cmpRadio(radioOptions, 'rephrase', 'rewrite'));
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'));
   form.appendChild(cmpActionBarSingle('Rewrite'));
@@ -48,6 +52,10 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
+  response.classList.add('response');
+  response.classList.add('animate__animated');
+  response.classList.add('animate__fadeIn');
+
   responseEl.appendChild(response);
   const actionBar = cmpActionBar('Rewrite', 'Back', successHandler, backHandler)
   responseEl.appendChild(actionBar);
@@ -56,7 +64,6 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
     form.style.display = 'none';
-    GLOBAL.loader$.next(true);
 
     const formData = new FormData(form); //this will return values from form for element using name attribute
     const rewriteOption = formData.get('rewrite');
@@ -78,8 +85,6 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
-    }).finally(() => {
-      GLOBAL.loader$.next(false);
     });
   });
 

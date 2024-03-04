@@ -23,6 +23,8 @@ export class GlobalData {
   rootUrl: string = "https://gworks.ai/wp-json/chatgpt-server";
   licence$ = new BehaviorSubject<ApiResponse | null>(null);
   isActivated: boolean = false;
+  threadViewCounter: number = 0;
+  threadViewDebounder$ = new BehaviorSubject<number>(0);
 }
 
 export const GLOBAL = new GlobalData();

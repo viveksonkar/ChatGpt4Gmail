@@ -40,6 +40,9 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
   response.classList.add('response');
+  response.classList.add('animate__animated');
+  response.classList.add('animate__fadeIn');
+
   responseEl.appendChild(response);
   const actionBar = cmpActionBar('Create Draft', 'Back', successHandler, backHandler)
   responseEl.appendChild(actionBar);
@@ -48,7 +51,6 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
 
   replyEmailForm.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
-    GLOBAL.loader$.next(true);
     const formData = new FormData(replyEmailForm);
     const prompt = formData.get('prompt');
     const tone = formData.get('tone');
@@ -74,8 +76,6 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
-    }).finally(() => {
-      GLOBAL.loader$.next(false);
     });
   });
 
@@ -86,6 +86,9 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
 
 const getReplyEmailForm = () => {
   const form =  document.createElement('form');
+  form.classList.add('animate__animated');
+  form.classList.add('animate__fadeIn');
+  
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'));
   form.appendChild(cmpDivider("0 0 16px 0"));
   form.appendChild(cmpTone());

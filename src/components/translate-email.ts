@@ -22,10 +22,14 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
   }
   
   const el = document.createElement('div');
+
   el.appendChild(heading('Translate Email'));
   el.appendChild(cmpDivider("0 0 16px 0"));
 
   const form = document.createElement("form");
+  form.classList.add('animate__animated');
+  form.classList.add('animate__fadeIn');
+  
   form.appendChild(cmplanguageDropDown( 'English', 'cg-language'));
 
   form.appendChild(cmpActionBarSingle('Translate'));
@@ -33,13 +37,16 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
 
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
+  response.classList.add('response');
+  response.classList.add('animate__animated');
+  response.classList.add('animate__fadeIn');
+
   responseEl.appendChild(response);
   responseEl.appendChild(cmpActionBarSingle('Back', backHandler));
   el.appendChild(responseEl);
 
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
-    GLOBAL.loader$.next(true);
     const formData = new FormData(form);
     const language = formData.get('language');
     const prompt = formData.get('prompt');
@@ -53,6 +60,8 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
       userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`);
     }
 
+    console.log(`[TranslateEmail: payload to cg: ${userMessage}]`);
+
     cgApi(`This this email from gmail`, userMessage).then( apiResponse => {
       form.style.display = 'none';
       responseEl.style.display = 'block';
@@ -60,8 +69,6 @@ export const TranslateEmail = (responseCb: (response: string) => void): HTMLDivE
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
-    }).finally(() => {
-      GLOBAL.loader$.next(false);
     });
   });
 

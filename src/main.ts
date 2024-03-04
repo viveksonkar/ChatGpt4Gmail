@@ -6,6 +6,7 @@ import { CONTEXT, sideBar } from './controls/sidebar';
 import Menu from './menu/menu';                 
 import { licenseHandler } from './components/license-handler';
 import { publishSidebarConfig } from './components/publish-sidebar-configs';
+import { debounce, debounceTime } from 'rxjs';
 
 class Main {
 
@@ -29,7 +30,9 @@ class Main {
 
         GLOBAL.sdk.Lists.registerThreadRowViewHandler((threadRowView: InboxSDK.ThreadRowView) => {
           GLOBAL.threadRowView = threadRowView;
-          publishSidebarConfig(CONTEXT.HOME, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
+          GLOBAL.threadViewDebounder$.pipe(debounceTime(500)).subscribe(() => {
+            publishSidebarConfig(CONTEXT.HOME, Menu.MENU_TYPE.NAVIGATION_MAIN, true);
+          })
         });
 
         GLOBAL.sdk.Conversations.registerThreadViewHandler((threadView) => {

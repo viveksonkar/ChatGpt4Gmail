@@ -38,6 +38,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   }
 
   const el = document.createElement('div');
+
   let ddOptions = writeEmailTypeOptions.map( ({label, content}) => ({label, content}));
 
   el.appendChild(heading('Write Email'));
@@ -55,11 +56,16 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   singleBtnFooter.classList.add('dflex-right');
   singleBtnFooter.appendChild(cmpButton('Generate', 'PRIMARY', undefined, true));
   form.appendChild(singleBtnFooter);
+  form.classList.add('animate__animated');
+  form.classList.add('animate__fadeIn');
+
   el.appendChild(form);
 
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
   response.classList.add('response');
+  response.classList.add('animate__animated');
+  response.classList.add('animate__fadeIn');
   responseEl.appendChild(response);
   const actionBar = cmpActionBar('Create Draft', 'Back', successHandler, backHandler)
   responseEl.appendChild(actionBar);
@@ -69,7 +75,6 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
     form.style.display = 'none';
-    GLOBAL.loader$.next(true);
 
     const formData = new FormData(form); //this will return values from form for element using name attribute
     const emailType = formData.get('email-type');
@@ -85,14 +90,14 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
       userMessage = userMessage.concat(`and keep the tone to be ${tone}`)
     }
 
+    console.log(`[WriteEmail: payload to cg: ${userMessage}]`);
+
     cgApi(`Generate a email based on user content`, userMessage).then( apiResponse => {
       responseEl.style.display = 'block';
       response.innerHTML = apiResponse;
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
-    }).finally(() => {
-      GLOBAL.loader$.next(false)
     });
   });
 
