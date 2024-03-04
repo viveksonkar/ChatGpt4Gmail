@@ -28,12 +28,19 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
   el.appendChild(cmpDivider("0 0 16px 0"));
 
   const form = document.createElement('form');
+  form.classList.add('animate__animated');
+  form.classList.add('animate__fadeIn');
+  
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'));
   form.appendChild(cmpActionBarSingle('Suggest'));
   el.appendChild(form);
   
   const responseEl = document.createElement('div');
   const response = document.createElement('div');
+  response.classList.add('response');
+  response.classList.add('animate__animated');
+  response.classList.add('animate__fadeIn');
+
   responseEl.appendChild(response);
 
   const actionBar = cmpActionBar('Main menu', 'Back', sucessHandler, backHandler)
@@ -42,7 +49,6 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
 
   form.addEventListener('submit', (ev: SubmitEvent) => {
     ev.preventDefault();
-    GLOBAL.loader$.next(true);
     const formData = new FormData(form);
     const prompt = formData.get('prompt');
 
@@ -64,8 +70,6 @@ export const SuggestEmail = (responseCb: (response: string) => void): HTMLDivEle
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
-    }).finally(() => {
-      GLOBAL.loader$.next(false);
     });
   });
 

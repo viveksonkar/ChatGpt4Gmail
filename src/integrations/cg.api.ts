@@ -39,6 +39,7 @@ export const cgApi = async (system: string, user: string,
   }
 
   try {
+    GLOBAL.loader$.next(true);
     // Make the API request using Axios
     const response = await axios.post(apiUrl, requestData, { headers });
     console.log('Response from ChatGPT API:', response.data);
@@ -50,5 +51,8 @@ export const cgApi = async (system: string, user: string,
       return errorResponse?.response?.data?.error?.message
     }
     throw errorResponse; // Throw the error to indicate failure
+  } finally {
+    console.log("Finally is called ")
+    GLOBAL.loader$.next(false);
   }
 };

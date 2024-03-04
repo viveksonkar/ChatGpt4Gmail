@@ -76,7 +76,7 @@ export const sideBar = () => {
   
   sidebarContainer.appendChild(sidebarContent1);
 
-  GLOBAL.sideBarConfigs$.pipe(debounceTime(500)).subscribe( configs => {
+  GLOBAL.sideBarConfigs$.subscribe( configs => {
 
     console.log("Sidebar opened with configs: ", configs);
 
