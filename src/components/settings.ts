@@ -1,3 +1,4 @@
+import { cmpButton } from "../controls/button";
 import { cmpDropDown } from "../controls/dropdown";
 
 export const option = [
@@ -20,12 +21,7 @@ export const Settings = (responseCb: (response: string) => void): HTMLDivElement
   apiKeyInput.classList.add('cg-input');
   apiKeyInput.placeholder = 'Enter API Key';
   keyForm.appendChild(apiKeyInput);
-
-  const apiUpdateButton = document.createElement('button');
-  apiUpdateButton.type = 'submit';
-  apiUpdateButton.innerHTML = 'Update';
-  apiUpdateButton.classList.add('upbtn');
-  keyForm.appendChild(apiUpdateButton);
+  keyForm.appendChild(cmpButton('Update', 'PRIMARY', undefined, true));
 
   const licenseForm = document.createElement('form');
   licenseForm.style.marginTop = '20px';
@@ -38,28 +34,15 @@ export const Settings = (responseCb: (response: string) => void): HTMLDivElement
   licenseKeyInput.classList.add('cg-input');
   licenseKeyInput.placeholder = 'Enter license Key';
   licenseForm.appendChild(licenseKeyInput);
+  licenseForm.appendChild(cmpButton('Update', 'PRIMARY', undefined, true));
 
-  const licenseUpdateButton = document.createElement('button');
-  licenseUpdateButton.type = 'submit';
-  licenseUpdateButton.innerHTML = 'Update';
-  licenseUpdateButton.classList.add('upbtn');
-  keyForm.appendChild(apiUpdateButton);
-  licenseForm.appendChild(licenseUpdateButton);
-  
   const selectDiv = document.createElement('div');
   selectDiv.style.marginTop = '20px';
   selectDiv.appendChild(cmpDropDown('Select Model', option, 'label1'));
-  const resetLabel = document.createElement("label");
+  selectDiv.appendChild(cmpButton('Reset Counter', 'PRIMARY', undefined, true));
+  const resetLabel = document.createElement("div");
   resetLabel.innerHTML = 'Click to reset counter(Testing Mode)';
-
-  const resetButton = document.createElement('button');
-  resetButton.type = 'submit';
-  resetButton.innerHTML = 'Reset Counter';
-  resetButton.classList.add('upbtn');
-
   selectDiv.appendChild(resetLabel);
-  selectDiv.appendChild(resetButton);
-  
  
   el.appendChild(keyForm);
   el.appendChild(licenseForm);
