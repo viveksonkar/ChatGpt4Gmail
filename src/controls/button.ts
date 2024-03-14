@@ -1,3 +1,5 @@
+import { GLOBAL } from "../utils/global-data";
+
 export type BUTTON_TYPE = 'PRIMARY' | 'SECONDARY';
 
 export const cmpButton = (text: string, type: BUTTON_TYPE, 
@@ -31,5 +33,9 @@ export const cmpButton = (text: string, type: BUTTON_TYPE,
       el.classList.add('cgbtn-default')
   }
   el.addEventListener('click', cb);
+
+  GLOBAL.btnLoader$.subscribe( isLoading => {
+    el.innerHTML = isLoading ?  "...Loading" : text;
+  })
   return el;  
 }

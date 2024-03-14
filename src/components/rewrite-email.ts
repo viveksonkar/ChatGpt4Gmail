@@ -4,7 +4,7 @@ import { cgPrompt } from "../controls/prompt";
 import { cmpRadio } from "../controls/radio";
 import { cgApi } from "../integrations/cg.api";
 import { GLOBAL } from "../utils/global-data";
-import { htmlFormatting } from "../utils/library-fn";
+import { extractSubjectAndBody, htmlFormatting } from "../utils/library-fn";
 import { cmpActionBar } from "./action-bar";
 import { cmpActionBarSingle } from "./action-bar-single";
 
@@ -18,7 +18,13 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
   const successHandler = (btnEv: MouseEvent) => {
     responseCb(GLOBAL.response);
     if(GLOBAL.composeView) {
-      GLOBAL.composeView.setBodyHTML(GLOBAL.response);
+      const emailData = extractSubjectAndBody(GLOBAL.response);
+      if(emailData) {
+        GLOBAL.composeView.setSubject(emailData.subject);
+        GLOBAL.composeView.setBodyHTML(GLOBAL.response);
+      } else {
+        GLOBAL.composeView.setBodyHTML(GLOBAL.response);
+      }
     }
   }
 
@@ -77,7 +83,7 @@ export const RewriteEmail = (responseCb: (response: string) => void): HTMLDivEle
       userMessage = userMessage.concat(` - ${GLOBAL.messageView.getBodyElement().innerText}`)
     }
 
-    console.log(`[RewriteEmail: payload to cg: ${userMessage}]`);
+    console.log(`[ RewriteEmail: payload to cg: ${userMessage} ]`);
 
     cgApi(``, userMessage).then( apiResponse => {
       responseEl.style.display = 'block';

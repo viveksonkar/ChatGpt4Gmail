@@ -33,7 +33,7 @@ export const composeMenuDD = () => ({
 });
 
 export const handleDropdownOption = (value: string) => {
-  publishNewMenu(value);
+  publishNewMenu(value, true);
 }
 
 export default composeMenuDD;

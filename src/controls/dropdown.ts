@@ -5,15 +5,16 @@ export interface Option {
   content: string;
 }
 
-export const cmpDropDown = (title: string, options: Array<Option>, 
-  selected: string, id: string = 'cg-select' ): HTMLDivElement => {
+export const cmpDropDown = (title: string, name: string, options: Array<Option>, 
+  selected: string, id: string = 'cg-select', onChange: (ev: Event) => void = (ev: Event) => {} ): HTMLDivElement => {
     const root = document.createElement('div');
     const label = document.createElement('label');
     label.classList.add('cg-label');
     label.innerText = title;
     let selectNode: HTMLSelectElement = document.createElement('select');
     selectNode.classList.add('cg-select');
-    selectNode.name = 'email-type';
+    selectNode.onchange = onChange;
+    selectNode.name = name;
     selectNode.id = id;
     options.forEach( option => {
       let optionEl = document.createElement('option');

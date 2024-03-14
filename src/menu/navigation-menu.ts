@@ -10,7 +10,7 @@ export const NavigationMain = (context: CONTEXT, responseCb: (response: string) 
   }
   const menuHtml = menuMap[context].map(option => `
     <li>
-      <button class="main-nav-item animate__animated animate__bounceInUp animate__faster" data-value="${option.value}">
+      <button class="main-nav-item animate__animated animate__fadeIn animate__faster" data-value="${option.value}">
         <img src="${option.iconUrl}" alt="${option.name}">${option.name}
       </button>
     </li>

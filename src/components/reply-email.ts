@@ -12,10 +12,10 @@ export const ReplyEmail = (responseCb: (response: string) => void): HTMLDivEleme
   
   const successHandler = (btnEv: MouseEvent) => {
     console.log("Reply Email sucess handler called");
-    GLOBAL.composeView ? GLOBAL.composeView.setBodyText(GLOBAL.response) :  
+    GLOBAL.composeView ? GLOBAL.composeView.insertTextIntoBodyAtCursor(GLOBAL.response) :  
     GLOBAL.sdk?.Compose.openNewComposeView().then( composeView => {
       GLOBAL.composeView = composeView;
-      composeView.setBodyText(GLOBAL.response);
+      composeView.insertTextIntoBodyAtCursor(GLOBAL.response)
     })
     responseCb(GLOBAL.response);
   }

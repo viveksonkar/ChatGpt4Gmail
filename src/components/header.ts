@@ -28,10 +28,14 @@ export const header = () => {
 
   const headerBack = document.createElement('div');
   headerBack.classList.add('header-back');
+  headerBack.classList.add('animate__animated');
+  headerBack.classList.add('animate__backInLeft');
+  headerBack.classList.add('animate__faster');
   headerBack.innerHTML = `&larr;`;
 
   const headerLogo = document.createElement('div');
-  headerLogo.innerHTML = `ChatGpt4Gmail`;
+  headerLogo.classList.add('header-logo');
+  headerLogo.innerHTML = `ChatGpt4Gmail™`;
 
   headerToggle.appendChild(headerBack);
   headerToggle.appendChild(headerLogo);

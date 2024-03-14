@@ -8,7 +8,7 @@ export const appInfo = () => {
 
   const appInfoTitle = document.createElement('div');
   appInfoTitle.classList.add('app-info-title');
-  appInfoTitle.innerHTML = `${GLOBAL.appName} ${GLOBAL.version}`;
+  appInfoTitle.innerHTML = `${GLOBAL.appName}™ ${GLOBAL.version}`;
 
   const appInfoClose = document.createElement('div');
   appInfoClose.classList.add('app-info-close');

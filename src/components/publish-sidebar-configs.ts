@@ -11,9 +11,10 @@ export const publishSidebarConfig = (context: CONTEXT, menu: string, isDefaultOp
   });
 }
 
-export const publishNewMenu = (menu: string) => {
+export const publishNewMenu = (menu: string, isDefaultOpen: boolean = false) => {
   GLOBAL.sideBarConfigs$.next({
     ...GLOBAL.sideBarConfigs$.value,
     menu: GLOBAL.isActivated ? menu : Menu.MENU_TYPE.ACTIVATION, // Do not show anything else if plugin is not activated
+    isDefaultOpen
   });
 }

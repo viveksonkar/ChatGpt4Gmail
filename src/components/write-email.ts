@@ -7,6 +7,7 @@ import { cmpActionBar } from "./action-bar";
 import { GLOBAL } from "../utils/global-data";
 import { cgPrompt } from "../controls/prompt";
 import { heading } from "../controls/heading";
+import { extractSubjectAndBody, htmlFormatting } from "../utils/library-fn";
 
 export const writeEmailTypeOptions = [
   { label: 'Sales', content: 'SALES', command: 'Write a sales email' },
@@ -20,8 +21,13 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
     console.log("Write Email sucess handler called")
     GLOBAL.sdk?.Compose.openNewComposeView().then( composeView => {
       GLOBAL.composeView = composeView;
-      GLOBAL.composeView?.insertTextIntoBodyAtCursor(GLOBAL.response);
-      GLOBAL.contentPanelRef?.close();
+      const emailData = extractSubjectAndBody(GLOBAL.response);
+      if(emailData && emailData.subject && emailData.body) {
+        GLOBAL.composeView.setSubject(emailData.subject);
+        GLOBAL.composeView?.insertTextIntoBodyAtCursor(emailData.body);
+      } else {
+        GLOBAL.composeView?.insertTextIntoBodyAtCursor(GLOBAL.response);
+      }
     }).catch( error => {
       GLOBAL.error = `Failed to create new message`;
     });
@@ -44,7 +50,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
   el.appendChild(heading('Write Email'));
   el.appendChild(cmpDivider("0 0 16px 0"));
   const form = document.createElement("form");
-  form.appendChild(cmpDropDown("Email Type", ddOptions, 'SALES', 'cg-email-type'));
+  form.appendChild(cmpDropDown("Email Type", 'email-type', ddOptions, 'SALES', 'cg-email-type'));
   form.appendChild(cmpDivider("0 0 16px 0"));
   form.appendChild(cgPrompt("Prompt", undefined, 'cg-prompt'))
   form.appendChild(cmpDivider("0 0 16px 0"));
@@ -94,7 +100,7 @@ export const WriteEmail = (responseCb: (response: string) => void): HTMLDivEleme
 
     cgApi(`Generate a email based on user content`, userMessage).then( apiResponse => {
       responseEl.style.display = 'block';
-      response.innerHTML = apiResponse;
+      response.innerHTML = htmlFormatting(apiResponse);
       GLOBAL.response = apiResponse;
     }).catch( (error) => {
       response.innerHTML = `${JSON.stringify(error)}`;
